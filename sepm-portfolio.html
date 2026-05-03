@@ -474,36 +474,50 @@ details[open] .s-tasks summary::before { content:'▾'; }
 .lab-content .lab-dsc { font-size:.82rem;color:var(--muted);line-height:1.7; }
 
 /* ══════════ TEAM ══════════ */
-.team-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem; }
-.member {
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:14px;padding:2.2rem 1.5rem;text-align:center;
-  position:relative;overflow:hidden;
-  transition:transform .35s,box-shadow .35s,border-color .35s;
-}
-.member::before {
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 0%,rgba(57,255,20,.06) 0%,transparent 60%);
-  opacity:0;transition:opacity .3s;
-}
-.member:hover { transform:translateY(-10px);border-color:var(--green);box-shadow:0 24px 56px var(--glow-g);  }
-.member:hover::before { opacity:1; }
-.m-hex {
-  width:80px;height:80px;margin:0 auto 1.4rem;
-  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:#000;
-  transition:transform .3s,filter .3s;position:relative;z-index:1;
-}
-.member:hover .m-hex { transform:scale(1.12) rotate(-5deg);filter:brightness(1.2); }
-.m1 { background:var(--red);box-shadow:0 0 20px var(--glow-r); }
-.m2 { background:var(--green);box-shadow:0 0 20px var(--glow-g); }
-.m3 { background:var(--blue);box-shadow:0 0 20px var(--glow-b); }
-.m4 { background:linear-gradient(135deg,var(--green),var(--blue));box-shadow:0 0 20px var(--glow-g); }
-.m-name { font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:.05em;color:var(--white);margin-bottom:.3rem;position:relative;z-index:1; }
-.m-role { font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem;position:relative;z-index:1; }
-.m-reg { font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);position:relative;z-index:1; }
-.m-tag { display:inline-block;margin-top:.8rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.08em;background:var(--bg2);border:1px solid var(--border);padding:.2rem .65rem;border-radius:3px;color:var(--muted);position:relative;z-index:1; }
+.team-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem; }
+.member { position:relative;border-radius:16px;padding:0;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform 0.1s ease;background:transparent;border:none; }
+.member-card-inner { position:relative;border-radius:16px;overflow:hidden;border:2px solid rgba(57,255,20,0.3);background:linear-gradient(160deg,#0a0a0f 0%,#0e1a0e 40%,#050508 100%);padding:2rem 1.5rem 1.8rem;text-align:center;z-index:1; }
+.member-card-inner::before { content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(57,255,20,0.015) 2px,rgba(57,255,20,0.015) 4px);pointer-events:none;z-index:0; }
+.member-banner { position:absolute;top:0;left:0;right:0;height:90px;z-index:0; }
+.member-banner::after { content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:inherit;clip-path:ellipse(55% 100% at 50% 0%); }
+.m1-banner { background:linear-gradient(135deg,#8b0000,#ff2020,#ff6b6b); }
+.m2-banner { background:linear-gradient(135deg,#004d00,#39ff14,#00e676); }
+.m3-banner { background:linear-gradient(135deg,#00274d,#00b4ff,#60d0ff); }
+.m4-banner { background:linear-gradient(135deg,#1a004d,#7c3aed,#a78bfa); }
+.member-country { position:absolute;top:12px;left:0;right:0;font-family:'Orbitron',sans-serif;font-size:0.55rem;font-weight:900;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.8);z-index:2;text-align:center; }
+.member-serial { position:absolute;top:10px;right:14px;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.5);z-index:2;letter-spacing:0.08em; }
+.m-hex { width:90px;height:90px;margin:55px auto 1.2rem;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:2.2rem;font-weight:900;color:#000;position:relative;z-index:2;transition:transform 0.3s; }
+.member:hover .m-hex { transform:scale(1.1) rotate(-5deg); }
+.m1 { background:linear-gradient(135deg,#ff2020,#ff6b6b);box-shadow:0 0 24px rgba(255,32,32,0.6); }
+.m2 { background:linear-gradient(135deg,#39ff14,#00e676);box-shadow:0 0 24px rgba(57,255,20,0.6); }
+.m3 { background:linear-gradient(135deg,#00b4ff,#60d0ff);box-shadow:0 0 24px rgba(0,180,255,0.6); }
+.m4 { background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 0 24px rgba(124,58,237,0.5); }
+.member-stats { display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:1rem -1.5rem;border-top:1px solid rgba(57,255,20,0.15);border-bottom:1px solid rgba(57,255,20,0.15);background:rgba(0,0,0,0.3);position:relative;z-index:2; }
+.ms { padding:0.7rem 0.4rem;text-align:center;border-right:1px solid rgba(57,255,20,0.1); }
+.ms:last-child { border-right:none; }
+.ms-val { font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;line-height:1;margin-bottom:0.25rem; }
+.ms-lbl { font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted); }
+.m-name { font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:0.05em;color:var(--white);margin-bottom:0.25rem;position:relative;z-index:2;margin-top:0.8rem; }
+.m-role { font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem;position:relative;z-index:2; }
+.m1-role { color:#ff2020; }
+.m2-role { color:#39ff14; }
+.m3-role { color:#00b4ff; }
+.m4-role { color:#a78bfa; }
+.m-reg { font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);position:relative;z-index:2;margin-bottom:0.6rem; }
+.electric-border { position:absolute;inset:-2px;border-radius:18px;z-index:0;opacity:0;transition:opacity 0.2s;background:conic-gradient(from 0deg,transparent 0deg,#39ff14 30deg,transparent 60deg,transparent 120deg,#00b4ff 150deg,transparent 180deg,transparent 240deg,#ff2020 270deg,transparent 300deg,transparent 360deg);animation:rotateBorder 2s linear infinite;filter:blur(2px); }
+@keyframes rotateBorder { to { transform:rotate(360deg); } }
+.member:hover .electric-border { opacity:1; }
+.bolt { position:absolute;font-size:0.9rem;opacity:0;transition:opacity 0.2s;z-index:3;animation:boltFlicker 0.3s ease infinite alternate;pointer-events:none; }
+@keyframes boltFlicker { 0% { opacity:0;transform:scale(0.8); } 100% { opacity:1;transform:scale(1.2); } }
+.bolt-tl { top:8px;left:8px; }
+.bolt-tr { top:8px;right:8px; }
+.bolt-bl { bottom:8px;left:8px; }
+.bolt-br { bottom:8px;right:8px; }
+.member:hover .bolt { opacity:1; }
+.power-badge { position:absolute;top:48px;left:14px;font-family:'Orbitron',sans-serif;font-size:0.55rem;font-weight:900;letter-spacing:0.1em;background:rgba(0,0,0,0.6);border:1px solid rgba(57,255,20,0.4);color:#39ff14;padding:0.15rem 0.4rem;border-radius:3px;z-index:3;text-shadow:0 0 6px #39ff14; }
+.member-card-inner::after { content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);transform:skewX(-20deg);transition:left 0.5s ease;pointer-events:none;z-index:1; }
+.member:hover .member-card-inner::after { left:150%; }
+.member { transform-style:preserve-3d;transition:transform 0.15s ease,box-shadow 0.15s ease; }
 
 /* ══════════ FOOTER ══════════ */
 footer {
@@ -1164,7 +1178,7 @@ footer {
           <div class="orbit-node on4">🔍</div>
         </div>
         <div class="orbit-ring"></div>
-        <div class="orbit-center">SENTINEL<br>X</div>
+        <div class="orbit-center">GUARD<br>X</div>
       </div>
 
       <div class="itr-list reveal-r">
@@ -1358,34 +1372,10 @@ footer {
     <p class="sec-desc reveal">Four members. One mission. Build a production-grade adversarial prompt detection system from scratch in a single semester.</p>
 
     <div class="team-grid">
-      <div class="member reveal">
-        <div class="m-hex m1">J</div>
-        <div class="m-name">Jai Akash B</div>
-        <div class="m-role">Product Owner</div>
-        <div class="m-reg">RA2311030010322</div>
-        <span class="m-tag">Backlog · Prioritisation · Stakeholders</span>
-      </div>
-      <div class="member reveal">
-        <div class="m-hex m2">K</div>
-        <div class="m-name">Kamalesh RK</div>
-        <div class="m-role">Developer</div>
-        <div class="m-reg">RA2311030010324</div>
-        <span class="m-tag">Backend · Detection Pipeline · API</span>
-      </div>
-      <div class="member reveal">
-        <div class="m-hex m3">A</div>
-        <div class="m-name">Abinesh A</div>
-        <div class="m-role">Scrum Master</div>
-        <div class="m-reg">RA2311030010330</div>
-        <span class="m-tag">Sprint Planning · Velocity · Blockers</span>
-      </div>
-      <div class="member reveal">
-        <div class="m-hex m4">S</div>
-        <div class="m-name">Sathyanarayanan P</div>
-        <div class="m-role">Developer</div>
-        <div class="m-reg">RA2311030010324</div>
-        <span class="m-tag">ML Models · Semantic Layer · Testing</span>
-      </div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m1-banner"><span class="member-country">AI Shield · SRM IST</span><span class="member-serial">#001</span></div><div class="power-badge">PWR 95</div><div class="m-hex m1">J</div><div class="m-name">Jai Akash B</div><div class="m-role m1-role">Product Owner</div><div class="m-reg">RA2311030010322</div><div class="member-stats"><div class="ms"><div class="ms-val" style="color:#ff2020">S1</div><div class="ms-lbl">Sprint</div></div><div class="ms"><div class="ms-val" style="color:#39ff14">10</div><div class="ms-lbl">Stories</div></div><div class="ms"><div class="ms-val" style="color:#00b4ff">95</div><div class="ms-lbl">Rating</div></div></div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m2-banner"><span class="member-country">AI Shield · SRM IST</span><span class="member-serial">#002</span></div><div class="power-badge">PWR 97</div><div class="m-hex m2">K</div><div class="m-name">Kamalesh RK</div><div class="m-role m2-role">Developer</div><div class="m-reg">RA2311030010324</div><div class="member-stats"><div class="ms"><div class="ms-val" style="color:#ff2020">S1</div><div class="ms-lbl">Sprint</div></div><div class="ms"><div class="ms-val" style="color:#39ff14">09</div><div class="ms-lbl">Stories</div></div><div class="ms"><div class="ms-val" style="color:#00b4ff">97</div><div class="ms-lbl">Rating</div></div></div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m3-banner"><span class="member-country">AI Shield · SRM IST</span><span class="member-serial">#003</span></div><div class="power-badge">PWR 93</div><div class="m-hex m3">A</div><div class="m-name">Abinesh A</div><div class="m-role m3-role">Scrum Master</div><div class="m-reg">RA2311030010330</div><div class="member-stats"><div class="ms"><div class="ms-val" style="color:#ff2020">S2</div><div class="ms-lbl">Sprint</div></div><div class="ms"><div class="ms-val" style="color:#39ff14">14</div><div class="ms-lbl">Labs</div></div><div class="ms"><div class="ms-val" style="color:#00b4ff">93</div><div class="ms-lbl">Rating</div></div></div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m4-banner"><span class="member-country">AI Shield · SRM IST</span><span class="member-serial">#004</span></div><div class="power-badge">PWR 96</div><div class="m-hex m4">S</div><div class="m-name">Sathyanarayanan P</div><div class="m-role m4-role">Developer</div><div class="m-reg">RA2311030010324</div><div class="member-stats"><div class="ms"><div class="ms-val" style="color:#ff2020">S2</div><div class="ms-lbl">Sprint</div></div><div class="ms"><div class="ms-val" style="color:#39ff14">08</div><div class="ms-lbl">Stories</div></div><div class="ms"><div class="ms-val" style="color:#00b4ff">96</div><div class="ms-lbl">Rating</div></div></div></div></div>
     </div>
   </div>
 </div>
@@ -1492,6 +1482,25 @@ document.querySelectorAll('.layer-row').forEach(r=>{
 document.querySelectorAll('.story-card').forEach(c=>{
   c.addEventListener('mousemove',e=>{const b=c.getBoundingClientRect();c.style.background=`radial-gradient(350px at ${e.clientX-b.left}px ${e.clientY-b.top}px,rgba(57,255,20,0.04),var(--surface) 70%)`;});
   c.addEventListener('mouseleave',()=>{c.style.background='';});
+});
+
+/* ── 3D TILT EFFECT on team cards ── */
+document.querySelectorAll('.member[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    const cx = r.width / 2;
+    const cy = r.height / 2;
+    const rotX = ((y - cy) / cy) * -12;
+    const rotY = ((x - cx) / cx) * 12;
+    card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.04)`;
+    card.style.boxShadow = `${-rotY * 2}px ${rotX * 2}px 40px rgba(57,255,20,0.2)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+    card.style.boxShadow = '';
+  });
 });
 </script>
 </body>
