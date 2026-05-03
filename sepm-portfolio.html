@@ -513,6 +513,19 @@ details[open] .s-tasks summary::before { content:'▾'; }
 .member:hover .member-card-inner::after { left:150%; }
 .member { transform-style:preserve-3d;transition:transform 0.15s ease,box-shadow 0.15s ease; }
 
+/* ── NAME GLOW EFFECT ── */
+.m-name {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s, text-shadow 0.3s, letter-spacing 0.3s;
+}
+
+.member:hover .m-name {
+  color: #39ff14;
+  text-shadow: 0 0 8px #39ff14, 0 0 20px rgba(57,255,20,0.5), 0 0 40px rgba(57,255,20,0.2);
+  letter-spacing: 0.12em;
+}
+
 /* ══════════ FOOTER ══════════ */
 footer {
   background:var(--bg2);border-top:1px solid var(--border);
@@ -1494,6 +1507,33 @@ document.querySelectorAll('.member[data-tilt]').forEach(card => {
   card.addEventListener('mouseleave', () => {
     card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
     card.style.boxShadow = '';
+  });
+});
+
+/* ── NAME PROXIMITY GLOW ── */
+document.querySelectorAll('.member').forEach(card => {
+  const name = card.querySelector('.m-name');
+  card.addEventListener('mousemove', e => {
+    const r = name.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+    const maxDist = 120;
+    if (dist < maxDist) {
+      const intensity = 1 - dist / maxDist;
+      name.style.textShadow = `0 0 ${8 * intensity}px #39ff14, 0 0 ${20 * intensity}px rgba(57,255,20,0.5)`;
+      name.style.color = `rgba(57,255,20,${0.4 + 0.6 * intensity})`;
+      name.style.letterSpacing = `${0.05 + 0.08 * intensity}em`;
+    } else {
+      name.style.textShadow = '';
+      name.style.color = '';
+      name.style.letterSpacing = '';
+    }
+  });
+  card.addEventListener('mouseleave', () => {
+    name.style.textShadow = '';
+    name.style.color = '';
+    name.style.letterSpacing = '';
   });
 });
 </script>
