@@ -474,9 +474,8 @@ details[open] .s-tasks summary::before { content:'▾'; }
 .lab-content .lab-dsc { font-size:.82rem;color:var(--muted);line-height:1.7; }
 
 /* ══════════ TEAM ══════════ */
-.team-grid { display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:1.5rem; }
-.member { position:relative;border-radius:16px;padding:0;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform 0.1s ease;background:transparent;border:none; }
-.member:nth-child(4) { grid-column:2; }
+.team-grid { display:grid;grid-template-columns:repeat(4, 1fr);gap:1rem; }
+.member { position:relative;border-radius:16px;padding:0;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform 0.1s ease;background:transparent;border:none;max-width:200px;margin:0 auto; }
 .member-card-inner { position:relative;border-radius:16px;overflow:hidden;border:2px solid rgba(57,255,20,0.3);background:linear-gradient(160deg,#0a0a0f 0%,#0e1a0e 40%,#050508 100%);padding:1.2rem 1rem 1rem;text-align:center;z-index:1; }
 .member-card-inner::before { content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(57,255,20,0.015) 2px,rgba(57,255,20,0.015) 4px);pointer-events:none;z-index:0; }
 .member-banner { position:absolute;top:0;left:0;right:0;height:60px;z-index:0; }
@@ -492,7 +491,7 @@ details[open] .s-tasks summary::before { content:'▾'; }
 .m2 { background:linear-gradient(135deg,#39ff14,#00e676);box-shadow:0 0 20px rgba(57,255,20,0.6); }
 .m3 { background:linear-gradient(135deg,#00b4ff,#60d0ff);box-shadow:0 0 20px rgba(0,180,255,0.6); }
 .m4 { background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 0 20px rgba(124,58,237,0.5); }
-.m-name { font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:0.05em;color:var(--white);margin-bottom:0.15rem;position:relative;z-index:2;margin-top:0.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.m-name { font-family:'Orbitron',sans-serif;font-size:0.82rem;font-weight:900;letter-spacing:0.05em;color:var(--white);margin-bottom:0.15rem;position:relative;z-index:2;margin-top:0.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;display:block; }
 .m-role { font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.3rem;position:relative;z-index:2; }
 .m1-role { color:#ff2020; }
 .m2-role { color:#39ff14; }
