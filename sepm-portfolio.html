@@ -476,18 +476,41 @@ details[open] .s-tasks summary::before { content:'▾'; }
 /* ══════════ TEAM ══════════ */
 .team-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem; }
 .member { position:relative;border-radius:16px;padding:0;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform 0.1s ease;background:transparent;border:none; }
-.member-card-inner { position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(57,255,20,0.2);background:var(--surface);padding:1.2rem 1rem;text-align:center;z-index:1; }
-.member-card-inner::before { content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(57,255,20,0.01) 2px,rgba(57,255,20,0.01) 4px);pointer-events:none;z-index:0; }
-.m-name { font-family:'Orbitron',sans-serif;font-size:0.95rem;font-weight:900;letter-spacing:0.05em;color:var(--white);margin-bottom:0.3rem;position:relative;z-index:2; }
+.member-card-inner { position:relative;border-radius:16px;overflow:hidden;border:2px solid rgba(57,255,20,0.3);background:linear-gradient(160deg,#0a0a0f 0%,#0e1a0e 40%,#050508 100%);padding:1.6rem 1.2rem 1.4rem;text-align:center;z-index:1; }
+.member-card-inner::before { content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(57,255,20,0.015) 2px,rgba(57,255,20,0.015) 4px);pointer-events:none;z-index:0; }
+.member-banner { position:absolute;top:0;left:0;right:0;height:70px;z-index:0; }
+.member-banner::after { content:'';position:absolute;bottom:-15px;left:0;right:0;height:30px;background:inherit;clip-path:ellipse(55% 100% at 50% 0%); }
+.m1-banner { background:linear-gradient(135deg,#8b0000,#ff2020,#ff6b6b); }
+.m2-banner { background:linear-gradient(135deg,#004d00,#39ff14,#00e676); }
+.m3-banner { background:linear-gradient(135deg,#00274d,#00b4ff,#60d0ff); }
+.m4-banner { background:linear-gradient(135deg,#1a004d,#7c3aed,#a78bfa); }
+.member-serial { position:absolute;top:8px;right:12px;font-family:'JetBrains Mono',monospace;font-size:0.56rem;color:rgba(255,255,255,0.6);z-index:2;letter-spacing:0.08em;font-weight:700; }
+.m-hex { width:75px;height:75px;margin:42px auto 0.8rem;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:#000;position:relative;z-index:2;transition:transform 0.3s; }
+.member:hover .m-hex { transform:scale(1.1) rotate(-5deg); }
+.m1 { background:linear-gradient(135deg,#ff2020,#ff6b6b);box-shadow:0 0 20px rgba(255,32,32,0.6); }
+.m2 { background:linear-gradient(135deg,#39ff14,#00e676);box-shadow:0 0 20px rgba(57,255,20,0.6); }
+.m3 { background:linear-gradient(135deg,#00b4ff,#60d0ff);box-shadow:0 0 20px rgba(0,180,255,0.6); }
+.m4 { background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 0 20px rgba(124,58,237,0.5); }
+.m-name { font-family:'Orbitron',sans-serif;font-size:0.92rem;font-weight:900;letter-spacing:0.05em;color:var(--white);margin-bottom:0.2rem;position:relative;z-index:2;margin-top:0.4rem; }
 .m-role { font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem;position:relative;z-index:2; }
 .m1-role { color:#ff2020; }
 .m2-role { color:#39ff14; }
 .m3-role { color:#00b4ff; }
 .m4-role { color:#a78bfa; }
 .m-reg { font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);position:relative;z-index:2; }
-.member-card-inner::after { content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.02),transparent);transform:skewX(-20deg);transition:left 0.5s ease;pointer-events:none;z-index:1; }
+.electric-border { position:absolute;inset:-2px;border-radius:18px;z-index:0;opacity:0;transition:opacity 0.2s;background:conic-gradient(from 0deg,transparent 0deg,#39ff14 30deg,transparent 60deg,transparent 120deg,#00b4ff 150deg,transparent 180deg,transparent 240deg,#ff2020 270deg,transparent 300deg,transparent 360deg);animation:rotateBorder 2s linear infinite;filter:blur(2px); }
+@keyframes rotateBorder { to { transform:rotate(360deg); } }
+.member:hover .electric-border { opacity:1; }
+.bolt { position:absolute;font-size:0.8rem;opacity:0;transition:opacity 0.2s;z-index:3;animation:boltFlicker 0.3s ease infinite alternate;pointer-events:none; }
+@keyframes boltFlicker { 0% { opacity:0;transform:scale(0.8); } 100% { opacity:1;transform:scale(1.2); } }
+.bolt-tl { top:6px;left:6px; }
+.bolt-tr { top:6px;right:6px; }
+.bolt-bl { bottom:6px;left:6px; }
+.bolt-br { bottom:6px;right:6px; }
+.member:hover .bolt { opacity:1; }
+.member-card-inner::after { content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);transform:skewX(-20deg);transition:left 0.5s ease;pointer-events:none;z-index:1; }
 .member:hover .member-card-inner::after { left:150%; }
-.member { transition:transform 0.15s ease,box-shadow 0.15s ease; }
+.member { transform-style:preserve-3d;transition:transform 0.15s ease,box-shadow 0.15s ease; }
 
 /* ══════════ FOOTER ══════════ */
 footer {
@@ -1342,10 +1365,10 @@ footer {
     <p class="sec-desc reveal">Four members. One mission. Build a production-grade adversarial prompt detection system from scratch in a single semester.</p>
 
     <div class="team-grid">
-      <div class="member reveal"><div class="member-card-inner"><div class="m-name">Jai Akash B</div><div class="m-role m1-role">Product Owner</div><div class="m-reg">RA2311030010322</div></div></div>
-      <div class="member reveal"><div class="member-card-inner"><div class="m-name">Kamalesh RK</div><div class="m-role m2-role">Developer</div><div class="m-reg">RA2311030010324</div></div></div>
-      <div class="member reveal"><div class="member-card-inner"><div class="m-name">Abinesh A</div><div class="m-role m3-role">Scrum Master</div><div class="m-reg">RA2311030010330</div></div></div>
-      <div class="member reveal"><div class="member-card-inner"><div class="m-name">Sathyanarayanan P</div><div class="m-role m4-role">Developer</div><div class="m-reg">RA2311030010324</div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m1-banner"><span class="member-serial">#001</span></div><div class="m-hex m1">J</div><div class="m-name">Jai Akash B</div><div class="m-role m1-role">Product Owner</div><div class="m-reg">RA2311030010322</div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m2-banner"><span class="member-serial">#002</span></div><div class="m-hex m2">K</div><div class="m-name">Kamalesh RK</div><div class="m-role m2-role">Developer</div><div class="m-reg">RA2311030010324</div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m3-banner"><span class="member-serial">#003</span></div><div class="m-hex m3">A</div><div class="m-name">Abinesh A</div><div class="m-role m3-role">Scrum Master</div><div class="m-reg">RA2311030010330</div></div></div>
+      <div class="member reveal" data-tilt><div class="electric-border"></div><span class="bolt bolt-tl">⚡</span><span class="bolt bolt-tr">⚡</span><span class="bolt bolt-bl">⚡</span><span class="bolt bolt-br">⚡</span><div class="member-card-inner"><div class="member-banner m4-banner"><span class="member-serial">#004</span></div><div class="m-hex m4">S</div><div class="m-name">Sathyanarayanan P</div><div class="m-role m4-role">Developer</div><div class="m-reg">RA2311030010324</div></div></div>
     </div>
   </div>
 </div>
