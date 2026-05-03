@@ -474,8 +474,9 @@ details[open] .s-tasks summary::before { content:'▾'; }
 .lab-content .lab-dsc { font-size:.82rem;color:var(--muted);line-height:1.7; }
 
 /* ══════════ TEAM ══════════ */
-.team-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem; }
+.team-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2rem; }
 .member { position:relative;border-radius:16px;padding:0;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform 0.1s ease;background:transparent;border:none; }
+.member:nth-child(4) { grid-column:2; }
 .member-card-inner { position:relative;border-radius:16px;overflow:hidden;border:2px solid rgba(57,255,20,0.3);background:linear-gradient(160deg,#0a0a0f 0%,#0e1a0e 40%,#050508 100%);padding:1.6rem 1.2rem 1.4rem;text-align:center;z-index:1; }
 .member-card-inner::before { content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(57,255,20,0.015) 2px,rgba(57,255,20,0.015) 4px);pointer-events:none;z-index:0; }
 .member-banner { position:absolute;top:0;left:0;right:0;height:70px;z-index:0; }
