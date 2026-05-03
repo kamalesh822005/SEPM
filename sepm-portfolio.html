@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEPM Portfolio — AI Shield Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   BEN 10 OMNITRIX — BLACK · GREEN · RED · BLUE
+═══════════════════════════════════════════ */
+:root {
+  --bg:       #050508;
+  --bg2:      #0a0a10;
+  --bg3:      #0e0e18;
+  --surface:  #111118;
+  --surface2: #181825;
+  --border:   rgba(57,255,20,0.15);
+  --border2:  rgba(57,255,20,0.35);
+  --green:    #39ff14;   /* Omnitrix green */
+  --green2:   #00e676;
+  --green-dim:#1a4a0a;
+  --red:      #ff2020;
+  --red-dim:  #3a0808;
+  --blue:     #00b4ff;
+  --blue-dim: #002a3a;
+  --white:    #e8ffe8;
+  --muted:    #5a6a5a;
+  --muted2:   #3a4a3a;
+  --glow-g:   rgba(57,255,20,0.25);
+  --glow-r:   rgba(255,32,32,0.2);
+  --glow-b:   rgba(0,180,255,0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cur { position:fixed; width:14px; height:14px; background:var(--green); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); box-shadow:0 0 12px var(--green),0 0 24px var(--glow-g); transition:width .2s,height .2s,background .2s,box-shadow .2s; }
+#cur-ring { position:fixed; width:40px; height:40px; border:1.5px solid var(--green); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.5; transition:width .25s,height .25s,opacity .25s,border-color .25s; }
+body:has(a:hover) #cur,body:has(button:hover) #cur { width:8px;height:8px;background:var(--red);box-shadow:0 0 12px var(--red); }
+body:has(a:hover) #cur-ring,body:has(button:hover) #cur-ring { width:60px;height:60px;border-color:var(--red);opacity:.7; }
+
+/* ── OMNITRIX SCAN LINE ── */
+.scanline { position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);animation:scan 4s linear infinite;z-index:9997;opacity:.4; }
+@keyframes scan { 0%{top:0} 100%{top:100vh} }
+
+/* ── PARTICLE CANVAS ── */
+#pcv { position:fixed;inset:0;pointer-events:none;z-index:0; }
+
+/* ── TRAIL ── */
+.trail { position:fixed;border-radius:50%;pointer-events:none;z-index:9996;animation:trailOut .5s ease forwards; }
+@keyframes trailOut { 0%{opacity:.8;transform:translate(-50%,-50%) scale(1)} 100%{opacity:0;transform:translate(-50%,-50%) scale(0)} }
+
+/* ══════════ NAV ══════════ */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 4%;
+  background:rgba(5,5,8,.92);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand {
+  font-family:'Orbitron',sans-serif;font-size:1.1rem;
+  font-weight:900;letter-spacing:.12em;color:var(--green);
+  text-decoration:none;display:flex;align-items:center;gap:.8rem;
+}
+.omnitrix-icon {
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--green);
+  background:radial-gradient(circle at 50% 55%,var(--green) 0%,var(--green-dim) 55%,#000 100%);
+  box-shadow:0 0 10px var(--glow-g),inset 0 0 8px rgba(57,255,20,.3);
+  animation:omnitrixPulse 3s ease infinite;
+  flex-shrink:0;
+}
+@keyframes omnitrixPulse {
+  0%,100%{box-shadow:0 0 10px var(--glow-g),inset 0 0 8px rgba(57,255,20,.3)}
+  50%{box-shadow:0 0 22px var(--green),0 0 44px var(--glow-g),inset 0 0 14px rgba(57,255,20,.5)}
+}
+.nav-links { display:flex;gap:2rem;list-style:none; }
+.nav-links a {
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .25s,text-shadow .25s;
+}
+.nav-links a:hover { color:var(--green);text-shadow:0 0 8px var(--glow-g); }
+
+/* ══════════ HERO — SEPM PAGE ══════════ */
+#hero {
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8rem 6% 6rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-hex-bg {
+  position:absolute;inset:0;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='104'%3E%3Cpolygon fill='none' stroke='%2339ff14' stroke-width='1' points='30,2 58,17 58,47 30,62 2,47 2,17'/%3E%3Cpolygon fill='none' stroke='%2339ff14' stroke-width='1' points='30,62 58,77 58,107 30,122 2,107 2,77' transform='translate(0,-60)'/%3E%3C/svg%3E");
+  background-size:60px 104px;
+}
+.hero-glow-orb {
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(57,255,20,.08) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:orbPulse 4s ease infinite;pointer-events:none;
+}
+@keyframes orbPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.2)}}
+
+.hero-subject-tag {
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:var(--green);border:1px solid var(--border2);
+  background:rgba(57,255,20,.05);
+  padding:.5rem 1.4rem;border-radius:100px;
+  margin-bottom:2rem;position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:.6rem;
+  animation:fadeUp .7s ease both;
+}
+.live-dot { width:7px;height:7px;border-radius:50%;background:var(--green);animation:omnitrixPulse 2s ease infinite; }
+
+#hero h1 {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2.8rem,8vw,7rem);
+  font-weight:900;line-height:.95;
+  letter-spacing:.04em;
+  position:relative;z-index:1;
+  animation:fadeUp .8s .1s ease both;
+}
+#hero h1 .line1 { color:var(--white);display:block; }
+#hero h1 .line2 {
+  color:transparent;
+  -webkit-text-stroke:2px var(--green);
+  display:block;
+  text-shadow:0 0 40px var(--glow-g);
+}
+#hero h1 .line3 { color:var(--green);display:block;text-shadow:0 0 30px var(--glow-g); }
+
+.hero-sub {
+  font-size:1.1rem;color:var(--muted);max-width:600px;
+  margin:1.8rem auto 0;font-style:italic;
+  position:relative;z-index:1;
+  animation:fadeUp .9s .2s ease both;
+}
+
+/* SEPM pillars */
+.sepm-pillars {
+  display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;
+  margin-top:3.5rem;position:relative;z-index:1;
+  animation:fadeUp 1s .3s ease both;
+}
+.pillar {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:1.2rem 1.6rem;
+  text-align:center;min-width:140px;
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.pillar::before {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--green);transform:scaleX(0);transition:transform .4s;
+}
+.pillar:hover { border-color:var(--green);transform:translateY(-6px);box-shadow:0 16px 40px var(--glow-g); }
+.pillar:hover::before { transform:scaleX(1); }
+.pillar-icon { font-size:1.6rem;margin-bottom:.4rem; }
+.pillar-title { font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:.12em;color:var(--green);text-transform:uppercase; }
+.pillar-desc { font-size:.78rem;color:var(--muted);margin-top:.3rem; }
+
+/* BIG SCROLL ARROW */
+.scroll-hero {
+  position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  z-index:2;animation:fadeIn 2s 1.2s ease both;
+}
+.scroll-txt { font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.25em;color:var(--green);text-transform:uppercase;text-shadow:0 0 8px var(--glow-g); }
+.scroll-arrows {
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.scroll-arrows span {
+  display:block;width:28px;height:28px;
+  border-right:3px solid var(--green);
+  border-bottom:3px solid var(--green);
+  transform:rotate(45deg);
+  animation:arrowBounce 1.4s ease infinite;
+  box-shadow:2px 2px 6px var(--glow-g);
+}
+.scroll-arrows span:nth-child(1){animation-delay:0s;opacity:.3}
+.scroll-arrows span:nth-child(2){animation-delay:.15s;opacity:.6}
+.scroll-arrows span:nth-child(3){animation-delay:.3s;opacity:1}
+@keyframes arrowBounce{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(8px)}}
+
+/* ══════════ SECTION BASE ══════════ */
+.section-wrap { padding:7rem 6%;max-width:1280px;margin:0 auto; }
+.sec-eyebrow {
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:var(--green);margin-bottom:.8rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.sec-eyebrow::before { content:'';width:30px;height:2px;background:var(--green);box-shadow:0 0 6px var(--glow-g); }
+.sec-title {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2rem,5vw,4rem);
+  font-weight:900;line-height:1.05;letter-spacing:.04em;
+  color:var(--white);margin-bottom:1rem;
+}
+.sec-title .hl { color:var(--green);text-shadow:0 0 20px var(--glow-g); }
+.sec-desc { color:var(--muted);max-width:640px;font-size:1rem;font-style:italic;margin-bottom:4rem; }
+
+/* ── DIVIDER ── */
+.glow-div { height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.3;margin:0 4%; }
+
+/* ══════════ SEPM TECHNICALITIES ══════════ */
+#sepm-tech { position:relative; }
+.tech-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem; }
+.tech-card {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:2rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.tech-card::after {
+  content:attr(data-num);
+  position:absolute;top:-10px;right:1rem;
+  font-family:'Orbitron',sans-serif;font-size:5rem;font-weight:900;
+  color:rgba(57,255,20,.04);line-height:1;pointer-events:none;
+}
+.tech-card:hover { transform:translateY(-6px);border-color:var(--green);box-shadow:0 20px 50px var(--glow-g); }
+.tc-icon { font-size:2rem;margin-bottom:1rem; }
+.tc-title { font-family:'Orbitron',sans-serif;font-size:.85rem;letter-spacing:.1em;color:var(--green);margin-bottom:.8rem; }
+.tc-body { font-size:.88rem;color:var(--muted);line-height:1.8; }
+
+/* ══════════ PROJECT INTRO (subheading section) ══════════ */
+#project {
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+#project::before {
+  content:'SENTINEL X';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Orbitron',sans-serif;font-size:clamp(5rem,15vw,14rem);
+  font-weight:900;color:transparent;
+  -webkit-text-stroke:1px rgba(57,255,20,.05);
+  pointer-events:none;white-space:nowrap;
+}
+.project-header {
+  text-align:center;padding:6rem 6% 4rem;position:relative;z-index:1;
+}
+.proj-eyebrow {
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:var(--red);margin-bottom:1.2rem;
+  display:inline-flex;align-items:center;gap:.6rem;
+}
+.proj-eyebrow::before,.proj-eyebrow::after { content:'';width:24px;height:1px;background:var(--red); }
+.proj-main-title {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.6rem,4vw,3.5rem);
+  font-weight:900;letter-spacing:.05em;
+  color:var(--white);margin-bottom:.8rem;
+}
+.proj-main-title .red-hl { color:var(--red);text-shadow:0 0 20px var(--glow-r); }
+.proj-sub-title {
+  font-family:'Orbitron',sans-serif;font-size:clamp(.9rem,2vw,1.4rem);
+  color:var(--green);letter-spacing:.08em;
+  text-shadow:0 0 12px var(--glow-g);
+}
+.proj-summary {
+  max-width:860px;margin:2rem auto 0;
+  font-size:1rem;color:var(--muted);line-height:1.9;text-align:center;
+}
+
+.proj-stats-row {
+  display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;
+  padding:3rem 6% 5rem;position:relative;z-index:1;
+}
+.pstat {
+  text-align:center;padding:1.5rem 2rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  min-width:130px;transition:border-color .3s,box-shadow .3s,transform .3s;
+}
+.pstat:hover { border-color:var(--green);box-shadow:0 12px 32px var(--glow-g);transform:translateY(-4px); }
+.pstat-num { font-family:'Orbitron',sans-serif;font-size:2.4rem;font-weight:900;color:var(--green);text-shadow:0 0 16px var(--glow-g); }
+.pstat-lbl { font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.3rem; }
+
+/* ══════════ 3-LAYER DETECTION ══════════ */
+#detection { position:relative; }
+.layers-container { display:flex;flex-direction:column;gap:2px;position:relative; }
+.layers-container::before {
+  content:'';position:absolute;left:60px;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--red),var(--blue),var(--green));
+  box-shadow:0 0 8px var(--glow-g);z-index:0;
+}
+.layer-row {
+  display:grid;grid-template-columns:120px 1fr;gap:2.5rem;
+  align-items:stretch;padding:2.5rem 0;
+  border-bottom:1px solid rgba(57,255,20,.06);
+  position:relative;z-index:1;
+  cursor:default;
+}
+.layer-row:last-child { border-bottom:none; }
+.layer-badge-col { display:flex;flex-direction:column;align-items:center;gap:.6rem; }
+.layer-hex {
+  width:60px;height:60px;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;
+  color:#000;transition:transform .3s,filter .3s;
+  flex-shrink:0;
+}
+.layer-hex.r { background:var(--red);box-shadow:0 0 20px var(--glow-r); }
+.layer-hex.b { background:var(--blue);box-shadow:0 0 20px var(--glow-b); }
+.layer-hex.g { background:var(--green);box-shadow:0 0 20px var(--glow-g); }
+.layer-row:hover .layer-hex { transform:scale(1.15) rotate(10deg);filter:brightness(1.3); }
+.layer-content { padding:.4rem 0; }
+.layer-eyebrow {
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:.3rem .9rem;border-radius:3px;display:inline-block;margin-bottom:.8rem;
+}
+.layer-eyebrow.r { background:rgba(255,32,32,.1);color:var(--red);border:1px solid rgba(255,32,32,.25); }
+.layer-eyebrow.b { background:rgba(0,180,255,.1);color:var(--blue);border:1px solid rgba(0,180,255,.25); }
+.layer-eyebrow.g { background:rgba(57,255,20,.08);color:var(--green);border:1px solid rgba(57,255,20,.2); }
+.layer-title { font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:.04em;color:var(--white);margin-bottom:.7rem; }
+.layer-desc { font-size:.92rem;color:var(--muted);line-height:1.85;max-width:750px; }
+.layer-chips { display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem; }
+.chip {
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+  background:var(--surface);border:1px solid var(--border);color:var(--green);
+  padding:.25rem .7rem;border-radius:3px;
+  transition:background .2s,border-color .2s,box-shadow .2s;
+}
+.layer-row:hover .chip { background:rgba(57,255,20,.08);border-color:var(--green);box-shadow:0 0 6px var(--glow-g); }
+
+/* ══════════ USER STORIES ══════════ */
+.stories-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem; }
+.story-card {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:2rem;position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+}
+.story-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--green),var(--blue));
+  transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.story-card:hover { transform:translateY(-6px);border-color:var(--green);box-shadow:0 20px 50px var(--glow-g); }
+.story-card:hover::before { transform:scaleX(1); }
+.story-card.done { border-left:3px solid var(--green); }
+.story-card.done::after { content:'✓ DONE';position:absolute;top:1rem;right:1rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:var(--green);background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);padding:.2rem .5rem;border-radius:3px; }
+.story-card.inprog::after { content:'⟳ IN PROGRESS';position:absolute;top:1rem;right:1rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:var(--blue);background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.2);padding:.2rem .5rem;border-radius:3px; }
+.s-id { font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;color:var(--blue);text-transform:uppercase;margin-bottom:.5rem;display:block; }
+.s-title { font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.04em;color:var(--white);margin-bottom:.8rem;line-height:1.3; }
+.s-body { font-size:.85rem;color:var(--muted);line-height:1.75; }
+.s-tags { display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1rem; }
+.s-tag { font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;padding:.22rem .6rem;border-radius:3px;font-weight:500; }
+.st-must { background:rgba(255,32,32,.08);color:var(--red);border:1px solid rgba(255,32,32,.2); }
+.st-should { background:rgba(0,180,255,.08);color:var(--blue);border:1px solid rgba(0,180,255,.2); }
+.st-could { background:rgba(57,255,20,.06);color:var(--green);border:1px solid rgba(57,255,20,.15); }
+.st-func { background:rgba(230,118,30,.08);color:#ff9f43;border:1px solid rgba(230,118,30,.2); }
+.s-tasks { margin-top:1.2rem; }
+.s-tasks summary { font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:.4rem;list-style:none;transition:color .2s; }
+.s-tasks summary::before { content:'▸';color:var(--green); }
+details[open] .s-tasks summary::before { content:'▾'; }
+.s-tasks summary:hover { color:var(--green); }
+.s-tasks ul { margin-top:.8rem;padding-left:.3rem; }
+.s-tasks li { font-size:.8rem;color:var(--muted);padding:.25rem 0 .25rem .9rem;border-bottom:1px solid rgba(57,255,20,.05);position:relative; }
+.s-tasks li::before { content:'→';position:absolute;left:0;color:var(--green);font-size:.7rem; }
+.s-progress { height:3px;background:var(--bg2);border-radius:2px;overflow:hidden;margin-top:1rem; }
+.s-fill { height:100%;border-radius:2px;transition:width 1.5s ease; }
+.s-fill.done { background:linear-gradient(90deg,var(--green),var(--green2));width:100%; }
+.s-fill.prog { background:linear-gradient(90deg,var(--blue),var(--green));width:55%; }
+.s-fill.new  { background:var(--muted2);width:8%; }
+.s-sprint { position:absolute;top:1rem;right:1rem; }
+.story-card.done .s-sprint, .story-card.inprog .s-sprint { top:2.5rem; }
+.s-sprint-tag { font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:.18rem .5rem;border-radius:3px; }
+
+/* ══════════ METHODOLOGY ══════════ */
+.model-grid { display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:center; }
+.orbit-scene { position:relative;height:440px; }
+.orbit-center {
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:110px;height:110px;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background:radial-gradient(circle at 50%,var(--green-dim),#000);
+  border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:900;
+  letter-spacing:.08em;color:var(--green);text-align:center;line-height:1.3;
+  box-shadow:0 0 30px var(--glow-g),inset 0 0 20px rgba(57,255,20,.1);
+  z-index:3;animation:omnitrixPulse 3s ease infinite;
+}
+.orbit-ring {
+  position:absolute;top:50%;left:50%;border-radius:50%;
+  border:1px dashed rgba(57,255,20,.2);
+}
+.orbit-ring:nth-child(2){width:180px;height:180px;margin:-90px;animation:spin 10s linear infinite}
+.orbit-ring:nth-child(3){width:280px;height:280px;margin:-140px;animation:spin 16s linear infinite reverse}
+.orbit-ring:nth-child(4){width:380px;height:380px;margin:-190px;animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit-node {
+  position:absolute;width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+  box-shadow:0 0 14px var(--glow-g);
+  border:2px solid var(--green);background:var(--bg2);
+}
+/* fixed positions on rings */
+.on1{top:-23px;left:50%;margin-left:-23px}
+.on2{bottom:-23px;left:50%;margin-left:-23px}
+.on3{top:50%;margin-top:-23px;right:-23px}
+.on4{top:50%;margin-top:-23px;left:-23px}
+
+.itr-list { display:flex;flex-direction:column;gap:1.2rem; }
+.itr-item {
+  display:flex;gap:1.4rem;align-items:flex-start;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:1.4rem;
+  transition:border-color .25s,transform .25s,box-shadow .25s;
+}
+.itr-item:hover { border-color:var(--green);transform:translateX(8px);box-shadow:-4px 0 0 var(--green),0 8px 24px var(--glow-g); }
+.itr-num { font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;color:var(--green);line-height:1;min-width:36px;text-shadow:0 0 10px var(--glow-g); }
+.itr-ttl { font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.06em;color:var(--white);margin-bottom:.4rem; }
+.itr-dsc { font-size:.85rem;color:var(--muted);line-height:1.75; }
+
+/* ══════════ SPRINT TIMELINE ══════════ */
+.sprint-track { position:relative;padding-left:4rem; }
+.sprint-track::before { content:'';position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--red),var(--green));box-shadow:0 0 8px var(--glow-g); }
+.sprint-block { position:relative;margin-bottom:3rem; }
+.sprint-dot {
+  position:absolute;left:-4rem;top:.6rem;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg2);border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:var(--green);
+  transition:border-color .3s,background .3s,box-shadow .3s,transform .3s;
+}
+.sprint-block:hover .sprint-dot { background:var(--green);border-color:var(--green);box-shadow:0 0 16px var(--green);transform:scale(1.3); }
+.sprint-label { font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;letter-spacing:.06em;color:var(--white);margin-bottom:.3rem; }
+.sprint-date { font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--green);margin-bottom:.8rem; }
+.sprint-desc { font-size:.88rem;color:var(--muted);margin-bottom:1rem;max-width:700px;line-height:1.8; }
+.sprint-us { display:flex;flex-wrap:wrap;gap:.4rem; }
+.sus { font-family:'JetBrains Mono',monospace;font-size:.65rem;background:var(--surface);border:1px solid var(--border);color:var(--white);padding:.22rem .6rem;border-radius:4px;transition:background .2s,border-color .2s,color .2s; }
+.sprint-block:hover .sus { background:rgba(57,255,20,.08);border-color:var(--green);color:var(--green); }
+
+/* ══════════ LAB EXPERIMENTS ══════════ */
+.lab-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem; }
+.lab-card {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:1.6rem;
+  display:flex;gap:1.2rem;
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.lab-card::before {
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--green);transform:scaleY(0);transition:transform .4s;
+}
+.lab-card:hover { border-color:rgba(57,255,20,.35);transform:translateY(-4px);box-shadow:0 16px 40px var(--glow-g); }
+.lab-card:hover::before { transform:scaleY(1); }
+.lab-num { font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:rgba(57,255,20,.15);line-height:1;min-width:36px;flex-shrink:0; }
+.lab-content .lab-ttl { font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.06em;color:var(--green);margin-bottom:.4rem; }
+.lab-content .lab-dsc { font-size:.82rem;color:var(--muted);line-height:1.7; }
+
+/* ══════════ TEAM ══════════ */
+.team-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem; }
+.member {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:2.2rem 1.5rem;text-align:center;
+  position:relative;overflow:hidden;
+  transition:transform .35s,box-shadow .35s,border-color .35s;
+}
+.member::before {
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(57,255,20,.06) 0%,transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.member:hover { transform:translateY(-10px);border-color:var(--green);box-shadow:0 24px 56px var(--glow-g);  }
+.member:hover::before { opacity:1; }
+.m-hex {
+  width:80px;height:80px;margin:0 auto 1.4rem;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:#000;
+  transition:transform .3s,filter .3s;position:relative;z-index:1;
+}
+.member:hover .m-hex { transform:scale(1.12) rotate(-5deg);filter:brightness(1.2); }
+.m1 { background:var(--red);box-shadow:0 0 20px var(--glow-r); }
+.m2 { background:var(--green);box-shadow:0 0 20px var(--glow-g); }
+.m3 { background:var(--blue);box-shadow:0 0 20px var(--glow-b); }
+.m4 { background:linear-gradient(135deg,var(--green),var(--blue));box-shadow:0 0 20px var(--glow-g); }
+.m-name { font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:.05em;color:var(--white);margin-bottom:.3rem;position:relative;z-index:1; }
+.m-role { font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem;position:relative;z-index:1; }
+.m-reg { font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);position:relative;z-index:1; }
+.m-tag { display:inline-block;margin-top:.8rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.08em;background:var(--bg2);border:1px solid var(--border);padding:.2rem .65rem;border-radius:3px;color:var(--muted);position:relative;z-index:1; }
+
+/* ══════════ FOOTER ══════════ */
+footer {
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:4rem 6%;
+  display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;
+  flex-wrap:wrap;
+}
+.foot-brand { font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--green);text-shadow:0 0 16px var(--glow-g);margin-bottom:.5rem; }
+.foot-info { font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--muted);line-height:2; }
+.foot-team { font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;color:var(--muted);line-height:2.2;text-align:right; }
+.foot-team span { color:var(--green); }
+
+/* ══════════ ANIMATIONS ══════════ */
+@keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+
+.reveal       { opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease; }
+.reveal-l     { opacity:0;transform:translateX(-36px);transition:opacity .75s ease,transform .75s ease; }
+.reveal-r     { opacity:0;transform:translateX(36px);transition:opacity .75s ease,transform .75s ease; }
+.reveal.on,.reveal-l.on,.reveal-r.on { opacity:1;transform:none; }
+
+/* ── MAGNETIC ── */
+.mag { display:inline-block;transition:transform .35s cubic-bezier(.23,1,.32,1); }
+
+/* responsive */
+@media(max-width:900px){
+  .model-grid,.footer{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .foot-team{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div class="scanline"></div>
+<canvas id="pcv"></canvas>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="#hero" class="nav-brand">
+    <div class="omnitrix-icon"></div>
+    SEPM PORTFOLIO
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sepm-tech">SEPM</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#detection">Architecture</a></li>
+    <li><a href="#stories">User Stories</a></li>
+    <li><a href="#labs">Labs</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     PAGE 1 — SEPM HERO
+══════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-hex-bg"></div>
+  <div class="hero-glow-orb"></div>
+
+  <div class="hero-subject-tag">
+    <span class="live-dot"></span>
+    Academic Year 2025–26 · SRM IST
+  </div>
+
+  <h1>
+    <span class="line1">PROJECT</span>
+    <span class="line2">MANAGEMENT</span>
+  </h1>
+
+  <p class="hero-sub">
+    A comprehensive portfolio documenting our journey through the full software engineering lifecycle — from requirements to deployment — using Agile, Scrum, and iterative development.
+  </p>
+
+  <div class="sepm-pillars">
+    <div class="pillar mag">
+      <div class="pillar-icon">📋</div>
+      <div class="pillar-title">Requirements</div>
+      <div class="pillar-desc">SRS, User Stories, Product Backlog</div>
+    </div>
+    <div class="pillar mag">
+      <div class="pillar-icon">🏗️</div>
+      <div class="pillar-title">System Design</div>
+      <div class="pillar-desc">Architecture, UML, API Design</div>
+    </div>
+    <div class="pillar mag">
+      <div class="pillar-icon">🔄</div>
+      <div class="pillar-title">Agile / Scrum</div>
+      <div class="pillar-desc">Sprints, MS Planner, Retrospectives</div>
+    </div>
+    <div class="pillar mag">
+      <div class="pillar-icon">🧪</div>
+      <div class="pillar-title">Testing</div>
+      <div class="pillar-desc">Functional Tests, RMMM, QA</div>
+    </div>
+    <div class="pillar mag">
+      <div class="pillar-icon">🚀</div>
+      <div class="pillar-title">Deployment</div>
+      <div class="pillar-desc">REST API, Integration, Maintenance</div>
+    </div>
+    <div class="pillar mag">
+      <div class="pillar-icon">⚠️</div>
+      <div class="pillar-title">Risk Mgmt</div>
+      <div class="pillar-desc">RMMM, Mitigation Strategies</div>
+    </div>
+  </div>
+
+  <div class="scroll-hero">
+    <span class="scroll-txt">Scroll Down</span>
+    <div class="scroll-arrows">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</section>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     SEPM TECHNICALITIES
+══════════════════════════════════ -->
+<div id="sepm-tech">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">Core Concepts</div>
+    <h2 class="sec-title reveal">SEPM <span class="hl">Technicalities</span></h2>
+    <p class="sec-desc reveal">The engineering principles and methodologies we applied throughout the project — from inception to delivery.</p>
+
+    <div class="tech-grid">
+      <div class="tech-card reveal" data-num="01">
+        <div class="tc-icon">🔍</div>
+        <div class="tc-title">Requirements Engineering</div>
+        <div class="tc-body">Gathered functional and non-functional requirements through stakeholder analysis. Crafted precise problem statements and project vision. Created a prioritised product backlog with user stories in As a… / I want… / So that… format covering all system features.</div>
+      </div>
+      <div class="tech-card reveal" data-num="02">
+        <div class="tc-icon">📐</div>
+        <div class="tc-title">System Architecture &amp; Design</div>
+        <div class="tc-body">Designed a modular three-layer backend detection pipeline exposed via REST API. Applied architectural patterns for separation of concerns, early-exit logic, and decision fusion. Created UML diagrams and low-fidelity paper prototypes before moving to Figma.</div>
+      </div>
+      <div class="tech-card reveal" data-num="03">
+        <div class="tc-icon">🔄</div>
+        <div class="tc-title">Agile &amp; Scrum Framework</div>
+        <div class="tc-body">Followed Agile methodology with two time-boxed sprints tracked on Microsoft Planner. Conducted Sprint Planning, Daily Stand-ups, Sprint Reviews, and Retrospectives. Used velocity tracking and burndown monitoring to ensure on-time delivery.</div>
+      </div>
+      <div class="tech-card reveal" data-num="04">
+        <div class="tc-icon">🧪</div>
+        <div class="tc-title">Testing &amp; Quality Assurance</div>
+        <div class="tc-body">Functional testing conducted across all system components — unit tests per layer, integration tests for the pipeline, and API endpoint validation. Acceptance criteria from user stories directly informed test case design. No critical failures observed.</div>
+      </div>
+      <div class="tech-card reveal" data-num="05">
+        <div class="tc-icon">⚠️</div>
+        <div class="tc-title">RMMM — Risk Management</div>
+        <div class="tc-body">Proactively identified risks: false negatives (missed attacks), false positives (blocking safe prompts), API failure, and performance latency. Defined mitigation strategies and monitoring procedures for each, ensuring system reliability under adversarial conditions.</div>
+      </div>
+      <div class="tech-card reveal" data-num="06">
+        <div class="tc-icon">🔁</div>
+        <div class="tc-title">Iterative Enhancement Model</div>
+        <div class="tc-body">Selected the Iterative Enhancement Model as our maintenance methodology. Each detection layer can be independently improved per iteration — retraining ML models with updated data, adding new jailbreak patterns, optimising the semantic classifier — without destabilising the full system.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     PAGE 2 — PROJECT SUBHEADING
+══════════════════════════════════ -->
+<div id="project">
+  <div class="project-header">
+    <div class="proj-eyebrow reveal">Our SEPM Project</div>
+    <h2 class="proj-main-title reveal">
+      Multi-Layered <span class="red-hl">Prompt Injection</span><br>Detection System
+    </h2>
+    <p class="proj-sub-title reveal">— SENTINEL X —</p>
+    <p class="proj-summary reveal">
+      During our SEPM project, we designed and developed an <strong>Adversarial Prompt Detection System</strong> aimed at safeguarding system prompts from prompt injection attacks in AI-based applications. The project followed a structured engineering approach covering requirements analysis, system design, implementation, testing, and risk management.<br><br>
+      The system architecture is a modular layered design implemented as a backend service exposed through a REST API. The detection pipeline processes every prompt through three sequential layers — rule-based, lexical anomaly, and semantic intent — before a decision fusion mechanism produces the final <strong>Safe / Unsafe</strong> classification. The system aligns with security principles: Confidentiality, Integrity, and Availability.
+    </p>
+  </div>
+
+  <div class="proj-stats-row">
+    <div class="pstat reveal"><div class="pstat-num">3</div><div class="pstat-lbl">Detection Layers</div></div>
+    <div class="pstat reveal"><div class="pstat-num">10</div><div class="pstat-lbl">User Stories</div></div>
+    <div class="pstat reveal"><div class="pstat-num">2</div><div class="pstat-lbl">Sprints</div></div>
+    <div class="pstat reveal"><div class="pstat-num">4</div><div class="pstat-lbl">Team Members</div></div>
+    <div class="pstat reveal"><div class="pstat-num">14</div><div class="pstat-lbl">Lab Experiments</div></div>
+    <div class="pstat reveal"><div class="pstat-num">0</div><div class="pstat-lbl">Critical Failures</div></div>
+  </div>
+</div>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     3-LAYER ARCHITECTURE — ANIMATED DIAGRAM
+══════════════════════════════════ -->
+<div id="detection">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">Detection Architecture</div>
+    <h2 class="sec-title reveal">Three-Layer <span class="hl">Defence Pipeline</span></h2>
+    <p class="sec-desc reveal">Every prompt flows through three sequential detection layers. The moment any layer identifies a threat, an <strong style="color:var(--red)">Early Exit Gateway</strong> fires — instantly blocking the prompt without wasting computation on deeper layers.</p>
+
+    <!-- EARLY EXIT EXPLAINER BOX -->
+    <div class="early-exit-box reveal">
+      <div class="ee-icon">⚡</div>
+      <div class="ee-content">
+        <div class="ee-title">What is the Early Exit Gateway?</div>
+        <div class="ee-desc">Traditional detection systems run every layer regardless of what earlier layers found — wasting CPU/GPU time on already-confirmed threats. Our Early Exit Gateway acts like a circuit breaker: after each layer evaluates the prompt, a gating function checks the result. If the layer returns <span class="ee-red">ATTACK DETECTED</span>, the entire pipeline halts immediately and fires a <span class="ee-red">BLOCK</span> response — skipping all subsequent layers. Only prompts that pass <em>all three layers</em> reach the Decision Fusion Module and receive an <span class="ee-green">ALLOW</span> verdict. This reduces average latency by up to 70% for obvious attacks and protects the most expensive semantic layer from unnecessary workload.</div>
+      </div>
+    </div>
+
+    <!-- ANIMATED FLOWCHART -->
+    <div class="arch-wrap reveal">
+
+      <!-- LEFT: FLOWCHART -->
+      <div class="flowchart">
+
+        <!-- INPUT -->
+        <div class="fc-node fc-input" id="fcInput">
+          <div class="fc-node-inner">
+            <span class="fc-icon">📥</span>
+            <span class="fc-label">Input Prompt</span>
+          </div>
+        </div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr0"></div>
+
+        <!-- LAYER 1 BOX -->
+        <div class="fc-node fc-layer fc-l1" id="fcL1">
+          <div class="fc-node-inner">
+            <div class="fc-layer-num">LAYER 1</div>
+            <div class="fc-layer-name">Rule-Based Explicit Attack Detection</div>
+            <div class="fc-layer-tech">Regex Pattern Matching</div>
+          </div>
+        </div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr1"></div>
+
+        <!-- GATE 1 -->
+        <div class="fc-gate-row">
+          <div class="fc-node fc-diamond" id="fcG1">
+            <div class="fc-diamond-inner">Attack?</div>
+          </div>
+          <div class="fc-gate-exit">
+            <div class="fc-gate-line" id="gl1"></div>
+            <div class="fc-gate-label fc-red-label">Attack Detected →</div>
+          </div>
+        </div>
+        <div class="fc-pass-label">Pass ↓</div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr2"></div>
+
+        <!-- LAYER 2 BOX -->
+        <div class="fc-node fc-layer fc-l2" id="fcL2">
+          <div class="fc-node-inner">
+            <div class="fc-layer-num">LAYER 2</div>
+            <div class="fc-layer-name">Lexical Anomaly Detection</div>
+            <div class="fc-layer-tech">Character TF-IDF + LightGBM</div>
+          </div>
+        </div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr3"></div>
+
+        <!-- GATE 2 -->
+        <div class="fc-gate-row">
+          <div class="fc-node fc-diamond" id="fcG2">
+            <div class="fc-diamond-inner">Attack?</div>
+          </div>
+          <div class="fc-gate-exit">
+            <div class="fc-gate-line" id="gl2"></div>
+            <div class="fc-gate-label fc-red-label">Attack Detected →</div>
+          </div>
+        </div>
+        <div class="fc-pass-label">Pass ↓</div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr4"></div>
+
+        <!-- LAYER 3 BOX -->
+        <div class="fc-node fc-layer fc-l3" id="fcL3">
+          <div class="fc-node-inner">
+            <div class="fc-layer-num">LAYER 3</div>
+            <div class="fc-layer-name">Semantic Intent Detection</div>
+            <div class="fc-layer-tech">Sentence-BERT + Logistic Regression</div>
+          </div>
+        </div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr5"></div>
+
+        <!-- DECISION FUSION -->
+        <div class="fc-node fc-fusion" id="fcFusion">
+          <div class="fc-node-inner">
+            <span class="fc-icon">🔀</span>
+            <div class="fc-layer-name">Decision Fusion</div>
+            <div class="fc-layer-tech">Rule Override + Score Fusion</div>
+          </div>
+        </div>
+        <div class="fc-safe-label">Safe ↓</div>
+        <div class="fc-arrow fc-arrow-down animated-arrow" id="arr6"></div>
+
+        <!-- ALLOW -->
+        <div class="fc-node fc-allow" id="fcAllow">
+          <div class="fc-node-inner">
+            <span class="fc-icon">✅</span>
+            <span class="fc-label">ALLOW</span>
+          </div>
+        </div>
+
+      </div><!-- end flowchart -->
+
+      <!-- RIGHT: BLOCK + explanation cards -->
+      <div class="arch-right">
+
+        <!-- BLOCK terminal -->
+        <div class="fc-block-terminal reveal">
+          <div class="fc-block-inner">
+            <span style="font-size:1.6rem">🚫</span>
+            <div class="fc-block-label">BLOCK</div>
+            <div class="fc-block-sub">Early Exit Fired</div>
+          </div>
+          <div class="block-arrows">
+            <div class="ba ba1">← Layer 1 Exit</div>
+            <div class="ba ba2">← Layer 2 Exit</div>
+            <div class="ba ba3">← Layer 3 Exit</div>
+          </div>
+        </div>
+
+        <!-- Layer explanation cards -->
+        <div class="arch-cards">
+          <div class="arch-card arch-card-r reveal">
+            <div class="ac-head">
+              <div class="ac-hex ac-red">01</div>
+              <div>
+                <div class="ac-title">Rule-Based Detection</div>
+                <div class="ac-sub">Explicit Pattern Matching</div>
+              </div>
+            </div>
+            <div class="ac-body">Scans every incoming prompt against a curated library of known jailbreak signatures, malicious command patterns, and system-override phrases using regular expressions. Zero ML overhead — pure pattern matching means sub-millisecond evaluation. First gate: if any regex fires, pipeline stops immediately.</div>
+            <div class="ac-chips">
+              <span class="chip">Regex Engine</span><span class="chip">Keyword Blacklist</span><span class="chip">&lt;1ms</span>
+            </div>
+          </div>
+
+          <div class="arch-card arch-card-b reveal">
+            <div class="ac-head">
+              <div class="ac-hex ac-blue">02</div>
+              <div>
+                <div class="ac-title">Lexical Anomaly Detection</div>
+                <div class="ac-sub">Character TF-IDF + LightGBM</div>
+              </div>
+            </div>
+            <div class="ac-body">Catches obfuscated attacks that avoid plain keywords (e.g. "H@ck", "h.a.c.k"). Converts prompts to character-level TF-IDF vectors — capturing structural oddities in character frequency. A LightGBM classifier trained on labelled injection datasets scores every prompt. Retrainable each sprint iteration with fresh false-positive/negative logs.</div>
+            <div class="ac-chips">
+              <span class="chip">TF-IDF Vectors</span><span class="chip">LightGBM</span><span class="chip">Obfuscation-Aware</span>
+            </div>
+          </div>
+
+          <div class="arch-card arch-card-g reveal">
+            <div class="ac-head">
+              <div class="ac-hex ac-green">03</div>
+              <div>
+                <div class="ac-title">Semantic Intent Detection</div>
+                <div class="ac-sub">Sentence-BERT + Logistic Regression</div>
+              </div>
+            </div>
+            <div class="ac-body">The deepest, most powerful layer. Sentence-BERT converts the entire prompt into a dense semantic embedding — capturing meaning, context, and implied intent beyond surface words. A trained classifier evaluates the embedding to detect subtle, paraphrased, or indirect adversarial intent that no keyword or statistical approach could catch.</div>
+            <div class="ac-chips">
+              <span class="chip">Sentence-BERT</span><span class="chip">Dense Embeddings</span><span class="chip">Intent Analysis</span>
+            </div>
+          </div>
+
+          <div class="arch-card arch-card-f reveal">
+            <div class="ac-head">
+              <div class="ac-hex ac-gold">DF</div>
+              <div>
+                <div class="ac-title">Decision Fusion Module</div>
+                <div class="ac-sub">Rule Override + Score Fusion</div>
+              </div>
+            </div>
+            <div class="ac-body">Only reached if all three layers return PASS. Aggregates confidence scores from Layer 2 and Layer 3, applies rule-override logic (any hard-rule hit from Layer 1 always wins), and produces the final classification. Outputs a structured JSON verdict: <code style="color:var(--green);background:rgba(57,255,20,.08);padding:.1rem .4rem;border-radius:3px">&#123;"decision":"safe","confidence":0.97&#125;</code></div>
+            <div class="ac-chips">
+              <span class="chip">Score Aggregation</span><span class="chip">Rule Override</span><span class="chip">JSON Verdict</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end arch-right -->
+    </div><!-- end arch-wrap -->
+
+  </div>
+</div>
+
+<style>
+/* ── EARLY EXIT BOX ── */
+.early-exit-box{
+  display:flex;gap:1.5rem;align-items:flex-start;
+  background:rgba(255,32,32,.05);border:1px solid rgba(255,32,32,.25);
+  border-radius:12px;padding:1.8rem 2rem;margin-bottom:4rem;
+}
+.ee-icon{font-size:2rem;flex-shrink:0;margin-top:.2rem}
+.ee-title{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.08em;color:var(--red);margin-bottom:.6rem}
+.ee-desc{font-size:.88rem;color:var(--muted);line-height:1.9}
+.ee-red{color:var(--red);font-weight:600}
+.ee-green{color:var(--green);font-weight:600}
+
+/* ── ARCH WRAP ── */
+.arch-wrap{display:grid;grid-template-columns:300px 1fr;gap:3rem;align-items:start}
+
+/* ── FLOWCHART ── */
+.flowchart{display:flex;flex-direction:column;align-items:center;gap:0;position:relative}
+
+.fc-node{width:100%;max-width:260px;position:relative}
+.fc-node-inner{
+  padding:1rem 1.2rem;border-radius:8px;text-align:center;
+  border:1px solid var(--border);background:var(--surface);
+  transition:box-shadow .3s,border-color .3s;
+}
+.fc-node:hover .fc-node-inner{border-color:var(--green);box-shadow:0 0 20px var(--glow-g)}
+
+.fc-input .fc-node-inner{background:linear-gradient(135deg,var(--surface),rgba(57,255,20,.06));border-color:rgba(57,255,20,.4)}
+.fc-icon{display:block;font-size:1.4rem;margin-bottom:.3rem}
+.fc-label{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.08em;color:var(--white)}
+
+.fc-layer .fc-node-inner{border-radius:6px}
+.fc-layer-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.3rem}
+.fc-l1 .fc-layer-num{color:var(--red)}
+.fc-l2 .fc-layer-num{color:var(--blue)}
+.fc-l3 .fc-layer-num{color:var(--green)}
+.fc-layer-name{font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:.3rem}
+.fc-layer-tech{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.06em}
+.fc-l1 .fc-node-inner{border-color:rgba(255,32,32,.35);background:rgba(255,32,32,.05)}
+.fc-l1:hover .fc-node-inner{box-shadow:0 0 20px var(--glow-r)}
+.fc-l2 .fc-node-inner{border-color:rgba(0,180,255,.35);background:rgba(0,180,255,.05)}
+.fc-l2:hover .fc-node-inner{box-shadow:0 0 20px var(--glow-b)}
+.fc-l3 .fc-node-inner{border-color:rgba(57,255,20,.35);background:rgba(57,255,20,.05)}
+
+.fc-fusion .fc-node-inner{background:linear-gradient(135deg,rgba(57,255,20,.06),rgba(0,180,255,.06));border-color:rgba(57,255,20,.4)}
+.fc-allow .fc-node-inner{background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,230,118,.08));border-color:var(--green);box-shadow:0 0 20px var(--glow-g)}
+.fc-allow .fc-label{color:var(--green);font-size:.9rem}
+
+/* DIAMOND */
+.fc-gate-row{display:flex;align-items:center;gap:0;width:100%;max-width:260px}
+.fc-diamond{width:80px;height:80px;flex-shrink:0}
+.fc-diamond .fc-node-inner{
+  width:70px;height:70px;border-radius:4px;
+  transform:rotate(45deg);
+  background:rgba(255,200,0,.08);border-color:rgba(255,200,0,.4);
+  display:flex;align-items:center;justify-content:center;
+  padding:0;
+}
+.fc-diamond-inner{
+  transform:rotate(-45deg);
+  font-family:'Orbitron',sans-serif;font-size:.6rem;font-weight:700;
+  color:#ffd700;letter-spacing:.06em;
+}
+.fc-gate-exit{display:flex;align-items:center;gap:.5rem;flex:1;padding-left:.5rem}
+.fc-gate-line{height:2px;width:60px;background:var(--red);box-shadow:0 0 6px var(--glow-r);position:relative}
+.fc-gate-line::after{content:'';position:absolute;right:-6px;top:-4px;border:5px solid transparent;border-left:8px solid var(--red)}
+.fc-gate-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.08em;white-space:nowrap}
+.fc-red-label{color:var(--red)}
+
+/* animated arrows */
+.fc-arrow-down{
+  width:2px;height:28px;background:linear-gradient(to bottom,var(--green),transparent);
+  position:relative;margin:0 auto;
+  box-shadow:0 0 4px var(--glow-g);
+}
+.fc-arrow-down::after{content:'';position:absolute;bottom:-6px;left:-5px;border:6px solid transparent;border-top:8px solid var(--green)}
+.animated-arrow{animation:flowPulse 2s ease infinite}
+@keyframes flowPulse{0%,100%{opacity:.5}50%{opacity:1;box-shadow:0 0 10px var(--green)}}
+
+.fc-pass-label,.fc-safe-label{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;
+  color:var(--green);text-transform:uppercase;text-align:center;width:100%;
+  padding:.2rem 0;
+}
+
+/* ── BLOCK TERMINAL ── */
+.fc-block-terminal{
+  background:rgba(255,32,32,.06);border:1px solid rgba(255,32,32,.35);
+  border-radius:10px;padding:1.4rem;text-align:center;margin-bottom:1.5rem;
+  box-shadow:0 0 30px rgba(255,32,32,.1);
+}
+.fc-block-inner{display:flex;flex-direction:column;align-items:center;gap:.3rem;margin-bottom:1rem}
+.fc-block-label{font-family:'Orbitron',sans-serif;font-size:1.6rem;font-weight:900;color:var(--red);letter-spacing:.1em;text-shadow:0 0 16px var(--glow-r)}
+.fc-block-sub{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,32,32,.6)}
+.block-arrows{display:flex;flex-direction:column;gap:.4rem}
+.ba{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.08em;color:var(--red);padding:.25rem .6rem;background:rgba(255,32,32,.06);border-radius:4px;border:1px solid rgba(255,32,32,.15)}
+
+/* ── ARCH CARDS ── */
+.arch-cards{display:flex;flex-direction:column;gap:1.2rem}
+.arch-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:transform .3s,box-shadow .3s,border-color .3s}
+.arch-card:hover{transform:translateX(6px)}
+.arch-card-r:hover{border-color:rgba(255,32,32,.4);box-shadow:-4px 0 0 var(--red)}
+.arch-card-b:hover{border-color:rgba(0,180,255,.4);box-shadow:-4px 0 0 var(--blue)}
+.arch-card-g:hover{border-color:rgba(57,255,20,.4);box-shadow:-4px 0 0 var(--green)}
+.arch-card-f:hover{border-color:rgba(255,200,0,.4);box-shadow:-4px 0 0 #ffd700}
+.ac-head{display:flex;gap:1rem;align-items:center;margin-bottom:.9rem}
+.ac-hex{
+  width:42px;height:42px;flex-shrink:0;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:900;color:#000;
+}
+.ac-red{background:var(--red);box-shadow:0 0 10px var(--glow-r)}
+.ac-blue{background:var(--blue);box-shadow:0 0 10px var(--glow-b)}
+.ac-green{background:var(--green);box-shadow:0 0 10px var(--glow-g)}
+.ac-gold{background:#ffd700;box-shadow:0 0 10px rgba(255,215,0,.3)}
+.ac-title{font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.06em;color:var(--white)}
+.ac-sub{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--muted);margin-top:.2rem}
+.ac-body{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:.8rem}
+.ac-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+
+@media(max-width:900px){.arch-wrap{grid-template-columns:1fr}.flowchart{max-width:280px;margin:0 auto 2rem}}
+</style>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     USER STORIES
+══════════════════════════════════ -->
+<div id="stories">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">Sprint Backlog</div>
+    <h2 class="sec-title reveal">User <span class="hl">Stories</span></h2>
+    <p class="sec-desc reveal">All user stories from both sprints — covering authentication, detection, explainability, performance, and API integration.</p>
+
+    <div class="stories-grid">
+
+      <!-- US3 -->
+      <div class="story-card done reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 1</span></div>
+        <span class="s-id">US03 · Prompt Detection Engine</span>
+        <div class="s-title">Detect Known Jailbreak Patterns</div>
+        <p class="s-body">As a security system administrator, I want to detect known jailbreak patterns so that explicit attacks are blocked immediately.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span><span class="s-tag" style="background:rgba(255,200,0,.08);color:#ffd700;border:1px solid rgba(255,200,0,.2)">Important</span></div>
+        <div class="s-progress"><div class="s-fill done"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Build regex pattern library for known jailbreak phrases</li><li>Implement keyword blacklist matching engine</li><li>Integrate early-exit gate to halt pipeline on match</li><li>Test against known attack corpus</li><li>Log all blocked prompts for audit</li></ul></div></details>
+      </div>
+
+      <!-- US4 -->
+      <div class="story-card done reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 1</span></div>
+        <span class="s-id">US04 · Prompt Detection Engine</span>
+        <div class="s-title">Detect Suspicious Lexical Patterns via ML</div>
+        <p class="s-body">As a developer, I want the system to detect suspicious lexical patterns using machine learning so that less obvious attacks are identified.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill done"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Implement character-level TF-IDF vectorisation pipeline</li><li>Train LightGBM classifier on labelled injection dataset</li><li>Integrate Layer 2 into detection pipeline after Layer 1</li><li>Validate on obfuscated attack samples (H@ck, h.a.c.k)</li><li>Set classification threshold and tune precision/recall</li></ul></div></details>
+      </div>
+
+      <!-- US5 -->
+      <div class="story-card done reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 1</span></div>
+        <span class="s-id">US05 · Prompt Detection Engine</span>
+        <div class="s-title">Semantic Analysis for Adversarial Intent</div>
+        <p class="s-body">As a developer, I want semantic analysis to detect high-level adversarial intent so that subtle or paraphrased attacks are identified.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill done"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Integrate Sentence-BERT for prompt embedding generation</li><li>Train semantic intent classifier on adversarial dataset</li><li>Build contextual meaning analysis pipeline</li><li>Connect Layer 3 output to Decision Fusion Module</li><li>Validate against paraphrased and indirect attacks</li></ul></div></details>
+      </div>
+
+      <!-- US8 -->
+      <div class="story-card done reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 1</span></div>
+        <span class="s-id">US08 · Decision &amp; Explainability</span>
+        <div class="s-title">Clear Allow / Block Decision Output</div>
+        <p class="s-body">As a user, I want to receive a clear allow/block decision so that I know whether the prompt is safe.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill done"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Build Decision Fusion Module to aggregate all layer outputs</li><li>Define Allow / Block response schema</li><li>Implement final classification logic</li><li>Return human-readable verdict in API response</li><li>Display decision clearly in user interface</li></ul></div></details>
+      </div>
+
+      <!-- US9 -->
+      <div class="story-card done reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 1</span></div>
+        <span class="s-id">US09 · System Integration</span>
+        <div class="s-title">Early-Exit Logic for Fast Blocking</div>
+        <p class="s-body">As a system administrator, I want the detection layers to follow early-exit logic so that computation is optimised and unsafe prompts are blocked quickly.</p>
+        <div class="s-tags"><span class="s-tag st-could">Could Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill done"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Implement gated early-exit check after each layer</li><li>Ensure pipeline halts immediately on adversarial detection</li><li>Profile latency improvements from early-exit mechanism</li><li>Document computational savings per layer</li></ul></div></details>
+      </div>
+
+      <!-- US1 -->
+      <div class="story-card inprog reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 2</span></div>
+        <span class="s-id">US01 · User Authentication</span>
+        <div class="s-title">Account Registration</div>
+        <p class="s-body">As a new user, I want to create an account so that I can securely access the AI Shield system.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill prog"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Design User Registration UI form</li><li>Implement input validation (email format, required fields)</li><li>Implement duplicate email check in the database</li><li>Implement password hashing (bcrypt/argon2) before storage</li><li>Create backend API endpoint for user registration</li><li>Implement redirect to login page after successful signup</li></ul></div></details>
+      </div>
+
+      <!-- US2 -->
+      <div class="story-card inprog reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 2</span></div>
+        <span class="s-id">US02 · User Authentication</span>
+        <div class="s-title">Secure Login</div>
+        <p class="s-body">As a registered user, I want to log into the system so that I can use the prompt safety detection service.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill prog"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Design User Login UI interface</li><li>Implement input validation for login fields</li><li>Create backend API endpoint for login authentication</li><li>Verify credentials against stored user records</li><li>Implement password verification using hashing algorithms</li><li>Generate and manage secure user session / auth token</li></ul></div></details>
+      </div>
+
+      <!-- US6 -->
+      <div class="story-card inprog reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 2</span></div>
+        <span class="s-id">US06 · Decision &amp; Explainability</span>
+        <div class="s-title">Flagged Layer Transparency</div>
+        <p class="s-body">As a user, I want to know which layer flagged the prompt so that I understand the reason for blocking.</p>
+        <div class="s-tags"><span class="s-tag st-should">Should Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill prog"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Design result explanation UI to display the flagged layer</li><li>Implement backend logic to capture which layer triggered the block</li><li>Create response format to include layer information in output</li><li>Develop user-friendly explanation messages per detection layer</li><li>Integrate explanation module with final decision output</li><li>Prevent disclosure of sensitive internal detection logic</li></ul></div></details>
+      </div>
+
+      <!-- US7 -->
+      <div class="story-card inprog reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 2</span></div>
+        <span class="s-id">US07 · Prompt Submission</span>
+        <div class="s-title">Submit Prompts for Safety Verification</div>
+        <p class="s-body">As a user, I want to submit prompts for safety verification, so that the system can determine whether they are safe.</p>
+        <div class="s-tags"><span class="s-tag st-must">Must Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill prog"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Design prompt input interface</li><li>Implement backend API to receive prompt submissions</li><li>Validate prompt input (not empty or malformed)</li><li>Send prompt through detection pipeline</li><li>Return Allow / Block decision to UI</li></ul></div></details>
+      </div>
+
+      <!-- US10 -->
+      <div class="story-card reveal">
+        <div class="s-sprint"><span class="s-sprint-tag">Sprint 2</span></div>
+        <span class="s-id">US10 · System Integration &amp; Performance</span>
+        <div class="s-title">REST API Access for Developers</div>
+        <p class="s-body">As a developer, I want to access the detection system via REST API so that it can be integrated into external applications.</p>
+        <div class="s-tags"><span class="s-tag st-should">Should Have</span><span class="s-tag st-func">Functional</span></div>
+        <div class="s-progress"><div class="s-fill new"></div></div>
+        <details><div class="s-tasks"><summary>Linked Tasks</summary><ul><li>Design REST API architecture for prompt submission and response handling</li><li>Create API endpoint for prompt safety analysis</li><li>Implement request validation for incoming JSON payloads</li><li>Develop response structure for Allow / Block decision output</li><li>Implement API authentication and authorization mechanisms</li></ul></div></details>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     METHODOLOGY
+══════════════════════════════════ -->
+<div id="model">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">Maintenance Model</div>
+    <h2 class="sec-title reveal">Iterative <span class="hl">Enhancement</span></h2>
+    <p class="sec-desc reveal">Chosen because adversarial attacks constantly evolve — requiring continuous refinement, not a one-shot build.</p>
+
+    <div class="model-grid">
+      <div class="orbit-scene reveal-l">
+        <div class="orbit-ring">
+          <div class="orbit-node on1">📋</div>
+          <div class="orbit-node on2">🧪</div>
+        </div>
+        <div class="orbit-ring">
+          <div class="orbit-node on3">⚙️</div>
+          <div class="orbit-node on4">🔍</div>
+        </div>
+        <div class="orbit-ring"></div>
+        <div class="orbit-center">SENTINEL<br>X</div>
+      </div>
+
+      <div class="itr-list reveal-r">
+        <div class="itr-item">
+          <div class="itr-num">01</div>
+          <div><div class="itr-ttl">Baseline Implementation</div><div class="itr-dsc">Define core detection requirements, set up three-layer architecture, implement rule-based layer as a stable, zero-latency baseline.</div></div>
+        </div>
+        <div class="itr-item">
+          <div class="itr-num">02</div>
+          <div><div class="itr-ttl">Incremental Layer Improvement</div><div class="itr-dsc">Each detection layer improved independently. New jailbreak patterns added to Layer 1, LightGBM retrained on updated data, Sentence-BERT fine-tuned with novel attacks.</div></div>
+        </div>
+        <div class="itr-item">
+          <div class="itr-num">03</div>
+          <div><div class="itr-ttl">Log-Driven Feedback Loop</div><div class="itr-dsc">Every processed prompt generates a structured log. False positives and negatives are analysed to identify pipeline gaps and drive the next iteration's targeted improvements.</div></div>
+        </div>
+        <div class="itr-item">
+          <div class="itr-num">04</div>
+          <div><div class="itr-ttl">Stable Incremental Delivery</div><div class="itr-dsc">Major redesigns avoided. Small, targeted updates keep the system production-stable while continuously improving detection accuracy and performance metrics.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     SPRINT TIMELINE
+══════════════════════════════════ -->
+<div id="sprints">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">Project Timeline</div>
+    <h2 class="sec-title reveal">Sprint <span class="hl">Breakdown</span></h2>
+    <p class="sec-desc reveal">Two Agile sprints covering the full project lifecycle — tracked live on Microsoft Planner.</p>
+
+    <div class="sprint-track">
+      <div class="sprint-block reveal">
+        <div class="sprint-dot">1</div>
+        <div class="sprint-label">Sprint 1</div>
+        <div class="sprint-date">Feb 01, 2026 → Mar 09, 2026</div>
+        <div class="sprint-desc">Foundation sprint — establishing the complete three-layer detection architecture, training ML models, implementing early-exit logic, and delivering the core Allow/Block decision module. All Sprint 1 stories completed on 04/01/2026.</div>
+        <div class="sprint-us">
+          <span class="sus">US3 — Jailbreak Detection</span>
+          <span class="sus">US4 — Lexical ML Layer</span>
+          <span class="sus">US5 — Semantic Layer</span>
+          <span class="sus">US8 — Decision Output</span>
+          <span class="sus">US9 — Early Exit Logic</span>
+        </div>
+      </div>
+
+      <div class="sprint-block reveal">
+        <div class="sprint-dot">2</div>
+        <div class="sprint-label">Sprint 2</div>
+        <div class="sprint-date">Mar 01, 2026 → Mar 28, 2026</div>
+        <div class="sprint-desc">Integration sprint — adding user authentication, prompt submission UI, explainability system showing which layer triggered the block, and the developer-facing REST API for external application integration.</div>
+        <div class="sprint-us">
+          <span class="sus">US1 — Registration</span>
+          <span class="sus">US2 — Login</span>
+          <span class="sus">US6 — Explainability</span>
+          <span class="sus">US7 — Prompt Submission</span>
+          <span class="sus">US10 — REST API</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     LAB EXPERIMENTS
+══════════════════════════════════ -->
+<div id="labs">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">Throughout The Semester</div>
+    <h2 class="sec-title reveal">Experiments <span class="hl">In The Field</span></h2>
+    <p class="sec-desc reveal">Every lab session built a layer of our engineering expertise — from comparing SDLC models on Day 1 to running full Sprint Retrospectives at the end.</p>
+
+    <div class="lab-grid">
+      <div class="lab-card reveal">
+        <div class="lab-num">01</div>
+        <div class="lab-content">
+          <div class="lab-ttl">SDLC vs Agile</div>
+          <div class="lab-dsc">Identified major differences between Traditional SDLC and Agile Process, defined the problem statement and mapped key stakeholders for the AI Shield project.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">02</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Problem Statement &amp; Vision</div>
+          <div class="lab-dsc">Identified the software project scope, crafted a precise problem statement and created the project vision for the Adversarial Prompt Detection System.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">03</div>
+        <div class="lab-content">
+          <div class="lab-ttl">User Stories &amp; Product Backlog</div>
+          <div class="lab-dsc">Developed all user stories in As a… / I want… / So that… format, constructed a prioritised product backlog, and prepared a structured release plan for both sprints.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">04</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Paper Prototyping</div>
+          <div class="lab-dsc">Created low-fidelity UI prototypes through paper prototyping — sketching the prompt submission interface, authentication screens, and detection result displays before digital implementation.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">05</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Figma UI/UX Design</div>
+          <div class="lab-dsc">Created and evaluated a full UI/UX design in Figma — high-fidelity mockups for the login, registration, prompt submission, and decision result screens with accessibility considerations.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">06</div>
+        <div class="lab-content">
+          <div class="lab-ttl">MS Planner &amp; Sprint Planning</div>
+          <div class="lab-dsc">Onboarded all project tasks into an Agile board using Microsoft Planner. Performed Sprint Planning — assigning user stories, estimating effort, and setting sprint goals for Sprint 1 and Sprint 2.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">07</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Sprint 1 — Interim Review I</div>
+          <div class="lab-dsc">Evaluated Sprint 1 committed user stories, validated design and coding approaches for the rule-based and lexical layers, and prepared test cases derived from acceptance criteria.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">08</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Sprint 1 — Interim Review II</div>
+          <div class="lab-dsc">Continued Sprint 1 review — validating semantic layer implementation, monitoring sprint progress on the MS Planner board, and tracking velocity against the burndown chart.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">09</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Sprint 1 — Interim Review III</div>
+          <div class="lab-dsc">Final Sprint 1 interim review — complete evaluation of all committed user stories, validating integration between the three detection layers and the decision fusion module.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">10</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Sprint Review &amp; Retrospective</div>
+          <div class="lab-dsc">Conducted a comprehensive Sprint Review — evaluated implemented features, validated architectural and functional outcomes, assessed test coverage, and identified areas for continuous improvement in Sprint 2.</div>
+        </div>
+      </div>
+      <div class="lab-card reveal">
+        <div class="lab-num">14</div>
+        <div class="lab-content">
+          <div class="lab-ttl">Final Sprint Review &amp; Retrospective</div>
+          <div class="lab-dsc">Final comprehensive Sprint Review and Retrospective — evaluated all implemented features across both sprints, validated the complete three-layer architecture, assessed full test coverage, and documented lessons learned for future iterations.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="glow-div"></div>
+
+<!-- ══════════════════════════════════
+     TEAM
+══════════════════════════════════ -->
+<div id="team">
+  <div class="section-wrap">
+    <div class="sec-eyebrow reveal">The Builders</div>
+    <h2 class="sec-title reveal">Our <span class="hl">Team</span></h2>
+    <p class="sec-desc reveal">Four members. One mission. Build a production-grade adversarial prompt detection system from scratch in a single semester.</p>
+
+    <div class="team-grid">
+      <div class="member reveal">
+        <div class="m-hex m1">J</div>
+        <div class="m-name">Jai Akash B</div>
+        <div class="m-role">Product Owner</div>
+        <div class="m-reg">RA2311030010322</div>
+        <span class="m-tag">Backlog · Prioritisation · Stakeholders</span>
+      </div>
+      <div class="member reveal">
+        <div class="m-hex m2">K</div>
+        <div class="m-name">Kamalesh RK</div>
+        <div class="m-role">Developer</div>
+        <div class="m-reg">RA2311030010324</div>
+        <span class="m-tag">Backend · Detection Pipeline · API</span>
+      </div>
+      <div class="member reveal">
+        <div class="m-hex m3">A</div>
+        <div class="m-name">Abinesh A</div>
+        <div class="m-role">Scrum Master</div>
+        <div class="m-reg">RA2311030010330</div>
+        <span class="m-tag">Sprint Planning · Velocity · Blockers</span>
+      </div>
+      <div class="member reveal">
+        <div class="m-hex m4">S</div>
+        <div class="m-name">Sathyanarayanan P</div>
+        <div class="m-role">Developer</div>
+        <div class="m-reg">RA2311030010324</div>
+        <span class="m-tag">ML Models · Semantic Layer · Testing</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="foot-brand">AI SHIELD</div>
+    <div class="foot-info">
+      Multi-Layered Prompt Injection Detection System<br>
+      SEPM Subject Portfolio · Academic Year 2025–26<br>
+      SRM Institute of Science and Technology
+    </div>
+  </div>
+  <div class="foot-team">
+    <span>Jai Akash B</span> · RA2311030010322 · Product Owner<br>
+    <span>Kamalesh RK</span> · RA2311030010324 · Developer<br>
+    <span>Abinesh A</span> · RA2311030010330 · Scrum Master<br>
+    <span>Sathyanarayanan P</span> · RA2311030010324 · Developer<br><br>
+    Built with 🟢 dedication
+  </div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  spawnTrail(mx,my);
+});
+(function animRing(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+
+/* ── TRAIL ── */
+const trailColors=['#39ff14','#ff2020','#00b4ff','#00e676'];
+let trailTick=0;
+function spawnTrail(x,y){
+  trailTick++;if(trailTick%2!==0)return;
+  const t=document.createElement('div');
+  t.className='trail';
+  const s=Math.random()*10+4;
+  t.style.cssText=`width:${s}px;height:${s}px;left:${x}px;top:${y}px;background:${trailColors[Math.floor(Math.random()*trailColors.length)]};mix-blend-mode:screen;`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),500);
+}
+
+/* ── CANVAS PARTICLES ── */
+const cv=document.getElementById('pcv'),ctx=cv.getContext('2d');
+let W,H;
+function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight}
+resize();addEventListener('resize',resize);
+const COLS=['#39ff14','#ff2020','#00b4ff','#00e676'];
+class P{
+  constructor(){this.r()}
+  r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.5;this.vy=(Math.random()-.5)*.5;this.sz=Math.random()*2+.5;this.a=Math.random()*.25+.05;this.c=COLS[Math.floor(Math.random()*COLS.length)]}
+  u(){
+    this.x+=this.vx;this.y+=this.vy;
+    if(this.x<0||this.x>W||this.y<0||this.y>H)this.r();
+    const dx=mx-this.x,dy=my-this.y,d=Math.hypot(dx,dy);
+    if(d<150){this.x+=dx*.02;this.y+=dy*.02}
+  }
+  d(){ctx.beginPath();ctx.arc(this.x,this.y,this.sz,0,Math.PI*2);ctx.fillStyle=this.c;ctx.globalAlpha=this.a;ctx.fill();}
+}
+const pts=Array.from({length:100},()=>new P());
+function drawConn(){
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+    if(d<90){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle='rgba(57,255,20,0.06)';ctx.globalAlpha=(1-d/90)*.4;ctx.lineWidth=.5;ctx.stroke();}
+  }
+}
+(function anim(){ctx.clearRect(0,0,W,H);ctx.globalAlpha=1;pts.forEach(p=>{p.u();p.d()});drawConn();requestAnimationFrame(anim)})();
+
+/* ── SCROLL REVEAL ── */
+const els=document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*60);obs.unobserve(e.target);}});
+},{threshold:.08});
+els.forEach(el=>obs.observe(el));
+
+/* ── MAGNETIC ── */
+document.querySelectorAll('.mag').forEach(el=>{
+  el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.18}px)`;});
+  el.addEventListener('mouseleave',()=>{el.style.transform='';});
+});
+
+/* ── NAV ACTIVE ── */
+const navAs=document.querySelectorAll('.nav-links a');
+addEventListener('scroll',()=>{
+  let c='';
+  document.querySelectorAll('[id]').forEach(s=>{if(scrollY>=s.offsetTop-180)c=s.id});
+  navAs.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+c?'var(--green)':'';a.style.textShadow=a.getAttribute('href')==='#'+c?'0 0 8px var(--glow-g)':'';});
+});
+
+/* ── LAYER ROW SPOTLIGHT ── */
+document.querySelectorAll('.layer-row').forEach(r=>{
+  r.addEventListener('mousemove',e=>{const b=r.getBoundingClientRect();r.style.background=`radial-gradient(500px at ${e.clientX-b.left}px ${e.clientY-b.top}px,rgba(57,255,20,0.05),transparent 70%)`;});
+  r.addEventListener('mouseleave',()=>{r.style.background='';});
+});
+
+/* ── STORY CARD SPOTLIGHT ── */
+document.querySelectorAll('.story-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const b=c.getBoundingClientRect();c.style.background=`radial-gradient(350px at ${e.clientX-b.left}px ${e.clientY-b.top}px,rgba(57,255,20,0.04),var(--surface) 70%)`;});
+  c.addEventListener('mouseleave',()=>{c.style.background='';});
+});
+</script>
+</body>
+</html>
